@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+
+gem "apns4r"
+require "apns4r"
+
+gateway_uri = if ARGV[0].to_s.downcase == '-p'
+  ARGV.shift
+  APNs4r::PRODUCTION_GATEWAY_URI
+else
+  APNs4r::SANDBOX_GATEWAY_URI
+end
+
+c = APNs4r::Connection.new(gateway_uri, ARGV[1], ARGV[2])
+
+device_token = ARGV[0]
+
+puts "Gateway: #{gateway_uri}"
+puts "Badge: #{ARGV[3].to_i}"
+puts "Alert: #{ARGV[4]}"
+puts "Sound: #{ARGV[5]}"
+
+c.send(APNs4r::SimpleNotification.new(device_token, ARGV[3].to_i, ARGV[4], ARGV[5]))

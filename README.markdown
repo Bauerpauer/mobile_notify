@@ -43,7 +43,7 @@ Example
 All simple as require - create Notification - push, just try it in irb
 
     require 'lib/apns4r' #=> true
-    n = APNs4r::Notification.create 'e754dXXX', { :aps => {:alert => "Hey, dude!", :badge => 1}, :custom_data => "asd" } #=> #<APNs4r::Notification:0x11fe2c0>
+    n = APNs4r::Notification.new('e754dXXX', { :aps => {:alert => "Hey, dude!", :badge => 1}, :custom_data => "asd" }) #=> #<APNs4r::Notification:0x11fe2c0>
     APNs4r::Sender.new.push n #=> 97
 
 Doc

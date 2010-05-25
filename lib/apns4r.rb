@@ -1,6 +1,10 @@
-$: << File.expand_path(File.dirname(__FILE__))
-require 'config'
-require 'apncore'
-require 'apnsconnection'
-require 'sender'
-#require 'feedbackreader'
+require "json"
+require "openssl"
+require "socket"
+require "uri"
+
+require "apns4r/version"
+require "apns4r/models/connection"
+require "apns4r/models/persistent_connection"
+require "apns4r/models/notification"
+require "apns4r/support/hash"
