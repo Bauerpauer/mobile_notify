@@ -24,11 +24,11 @@ here's a tip from [great post about integration between Python and APNs](http://
 Example
 =======
 
-  require "rubygems"
-  require "apns4r"
+    require "rubygems"
+    require "apns4r"
 
-  c = APNs4r::Connection.new(APNs4r::SANDBOX_GATEWAY_URI, "/path/to/cert.pem", "/path/to/key.pem")
-  c.send(APNs4r::SimpleNotification.new("some device token", 27, "Check out the new ride!", "default"))
+    c = APNs4r::Connection.new(APNs4r::SANDBOX_GATEWAY_URI, "/path/to/cert.pem", "/path/to/key.pem")
+    c.send(APNs4r::SimpleNotification.new("some device token", 27, "Check out the new ride!", "default"))
 
 Doc
 ===
