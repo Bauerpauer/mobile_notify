@@ -1,36 +1,31 @@
-Apns4r
+mobile_notify
 ======
 
-This lib is intended to allow write my own APNs provider for Apple Push
-Notificaion services (APNs) in ruby.  Requires json gem.
+A simple library intended to provide a simple interface for sending APNS messages for iPhone, iPod, and iPad
+applications.
 
 Configuration
 =============
 
-If you want to use APNs certificates with ruby (ie with OpenSSL),
-here's a tip from [great post about integration between Python and APNs](http://blog.nuclearbunny.org/2009/05/11/connecting-to-apple-push-notification-services-using-python-twisted/):
+To use this library, you'll need to export your Apple Push Services certificate and private key to a .p12 file.  Open up
+Keychain Access and find the proper certificate + private key combination.  For development certs, the name of the cert
+you're looking for will be in the format: "Apple Development Push Services: IDENTIFIER:APPID", for production certs, the
+name is "Apple Production Push Services: IDENTIFIER:APPID".  For some reason these certs were stored under my "System"
+keychain, and were missing the private key association.  Dragging the cert to the "login" keychain caused the proper
+private key to associate w/ the cert.  After you're sure everything is setup, right-click the cert and export it to a 
+.p12 file.  Open a terminal window and run the following command:
 
->One caveat  - the Mac OS X Keychain Access application does not directly export
->certificates and private keys in Private Enhanced Mail (.pem)  format, which is
->what the OpenSSL implementation we use with Twisted will want, but luckily
->there’s an easy mechanism to convert if you export the files as Personal
->Information Exchange (.p12) format. The following two commands can be used to
->convert the .p12 files into .pem files using the built-in openssl command on
->Mac OS X or most Linux distributions:
-
-    openssl pkcs12 -in cred.p12 -out certkey.pem -nodes -clcerts
-    openssl pcks12 -in pkey.p12 -out pkey.pem -nodes -clcerts
+    openssl pkcs12 -in exported_cert_and_key.p12 -out cert_and_key.pem -nodes
 
 Example
 =======
 
     require "rubygems"
-    require "apns4r"
+    require "mobile_notify"
 
-    c = APNs4r::Connection.new(APNs4r::SANDBOX_GATEWAY_URI, "/path/to/cert.pem", "/path/to/key.pem")
-    c.send(APNs4r::SimpleNotification.new("some device token", 27, "Check out the new ride!", "default"))
+    connection = MobileNotify::Apns::Connection.new(RubyAPNS::SANDBOX_GATEWAY_URI, "/path/to/cert_and_key.pem")
+    connection.send(MobileNotify::Apns::SimpleNotification.new("some device token", 27, "Check out the new ride!", "default"))
+    connection.close
 
-Doc
-===
 
 Copyright (c) 2010 Scott Bauer, released under the MIT license

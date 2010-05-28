@@ -2,22 +2,28 @@
 
 require "rubygems"
 
-gem "apns4r"
-require "apns4r"
+gem "mobile_notify"
+require "mobile_notify"
 
 gateway_uri = if ARGV[0].to_s.downcase == '-p'
   ARGV.shift
-  APNs4r::PRODUCTION_GATEWAY_URI
+  MobileNotify::Apns::PRODUCTION_GATEWAY_URI
 else
-  APNs4r::SANDBOX_GATEWAY_URI
+  MobileNotify::Apns::SANDBOX_GATEWAY_URI
 end
 
-c = APNs4r::Connection.new(gateway_uri, ARGV[1], ARGV[2])
+device_token, cert, key, badge, alert, sound = if File.file?(ARGV[2])
+  [ARGV[0], ARGV[1], ARGV[2], ARGV[3].to_i, ARGV[4], ARGV[5]]
+else
+  [ARGV[0], ARGV[1], nil, ARGV[2].to_i, ARGV[3], ARGV[4]]
+end
 
 puts "Gateway: #{gateway_uri}"
-puts "Device Token: #{ARGV[0]}"
-puts "Badge: #{ARGV[3].to_i}"
-puts "Alert: #{ARGV[4]}"
-puts "Sound: #{ARGV[5]}"
+puts "Device Token: #{device_token}"
+puts "Badge: #{badge}"
+puts "Alert: #{alert}"
+puts "Sound: #{sound}"
 
-c.send(APNs4r::SimpleNotification.new(ARGV[0], ARGV[3].to_i, ARGV[4], ARGV[5]))
+MobileNotify::Apns::Connection.open(gateway_uri, cert, key) do |connection|
+  connection.send(MobileNotify::Apns::SimpleNotification.new(device_token, badge, alert, sound))
+end

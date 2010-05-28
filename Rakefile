@@ -12,17 +12,17 @@ require "rake/testtask"
 
 # Gem
 require "rake/gempackagetask"
-require "lib/apns4r/version"
+require "lib/mobile_notify/version"
 
-NAME = "apns4r"
-SUMMARY = "Apple Push Notification Service Server"
-GEM_VERSION = APNs4r::VERSION
+NAME = "mobile_notify"
+SUMMARY = "Mobile Notification Services w/ support for the Apple Push Notification Service (APNS)"
+GEM_VERSION = MobileNotify::VERSION
 
 spec = Gem::Specification.new do |s|
   s.name = NAME
   s.summary = s.description = SUMMARY
-  s.author = "Scott Bauer, Leonid Ponomarev"
-  s.homepage = "http://rdoc.info/projects/Bauerpauer/Apns4r"
+  s.author = "Scott Bauer"
+  s.homepage = "http://rdoc.info/projects/Bauerpauer/mobile_notify"
   s.version = GEM_VERSION
   s.platform = Gem::Platform::RUBY
   s.require_path = 'lib'
@@ -48,7 +48,7 @@ end
 spec_file = ".gemspec"
 desc "Create #{spec_file}"
 task :gemspec do
- File.open(spec_file, "w") do |file|
-   file.puts spec.to_ruby
- end
+  File.open(spec_file, "w") do |file|
+    file.puts spec.to_ruby
+  end
 end
