@@ -22,7 +22,7 @@ spec = Gem::Specification.new do |s|
   s.name = NAME
   s.summary = s.description = SUMMARY
   s.author = "Scott Bauer"
-  s.homepage = "http://rdoc.info/projects/Bauerpauer/mobile_notify"
+  s.homepage = "http://github.com/Bauerpauer/mobile_notify"
   s.version = GEM_VERSION
   s.platform = Gem::Platform::RUBY
   s.require_path = 'lib'
