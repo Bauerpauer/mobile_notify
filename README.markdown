@@ -23,7 +23,7 @@ Example
     require "rubygems"
     require "mobile_notify"
 
-    connection = MobileNotify::Apns::Connection.new(RubyAPNS::SANDBOX_GATEWAY_URI, "/path/to/cert_and_key.pem")
+    connection = MobileNotify::Apns::Connection.new(MobileNotify::Apns::SANDBOX_GATEWAY_URI, "/path/to/cert_and_key.pem")
     connection.send(MobileNotify::Apns::SimpleNotification.new("some device token", 27, "Check out the new ride!", "default"))
     connection.close
 
