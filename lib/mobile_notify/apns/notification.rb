@@ -46,7 +46,7 @@ module MobileNotify
     end
   
     class BadgeNotification < Notification
-      def initialize(device_token, badge, sound = nil)
+      def initialize(device_token, badge_value, sound = nil)
         payload = { "aps" => {} }
         payload["aps"]["badge"] = badge_value.to_i
         payload["aps"]["sound"] = sound if sound
