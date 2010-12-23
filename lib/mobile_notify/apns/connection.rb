@@ -73,18 +73,15 @@ module MobileNotify
       
       def send(notification)
         raise NotConnectedError.new(@uri) unless @ssl_socket
+        retry_timer ||= 0
 
-        unless defined?(retry_timer)
-          retry_timer = 0
-        end
-      
         @ssl_socket.write(notification.to_data)
         self
       rescue OpenSSL::SSL::SSLError, Errno::EPIPE
         sleep(self.transmission_retry_delay)
         retry_timer += self.transmission_retry_delay
         retry if retry_timer < self.transmission_timeout
-      
+
         raise TransmissionTimeoutError.new(@uri, self.transmission_timeout, $!) if retry_timer >= self.transmission_timeout
       end
     
@@ -98,9 +95,7 @@ module MobileNotify
       protected
     
       def establish_connection
-        unless defined?(retry_timer)
-          retry_timer = 0 
-        end
+        retry_timer ||= 0
 
         # Wrap the TCP socket w/ SSL
         ssl_socket = OpenSSL::SSL::SSLSocket.new(@tcp_socket, @ssl_context)
