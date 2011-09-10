@@ -5,6 +5,8 @@ require "rubygems"
 gem "mobile_notify"
 require "mobile_notify"
 
+puts "Using MobileNotify Version #{MobileNotify::VERSION}"
+
 gateway_uri = if ARGV[0].to_s.downcase == '-p'
   ARGV.shift
   MobileNotify::Apns::PRODUCTION_GATEWAY_URI
@@ -27,3 +29,22 @@ puts "Sound: #{sound}"
 MobileNotify::Apns::Connection.open(gateway_uri, cert, key) do |connection|
   connection.send(MobileNotify::Apns::SimpleNotification.new(device_token, badge, alert, sound))
 end
+
+# connection = MobileNotify::Apns::Connection.new(gateway_uri, cert, key)
+# connection.maximum_connection_age = 5
+#
+# connection.send(MobileNotify::Apns::SimpleNotification.new(device_token, badge, alert, sound))
+#
+# sleep 1
+#
+# connection.send(MobileNotify::Apns::SimpleNotification.new(device_token, badge + 1, alert, sound))
+#
+# sleep 1
+#
+# connection.send(MobileNotify::Apns::SimpleNotification.new(device_token, badge + 2, alert, sound))
+#
+# sleep 6
+#
+# connection.send(MobileNotify::Apns::SimpleNotification.new(device_token, badge + 3, alert, sound))
+#
+# connection.close

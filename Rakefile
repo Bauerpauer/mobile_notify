@@ -3,52 +3,23 @@ require "pathname"
 require "rake"
 require "rake/testtask"
 
-# task :default => [:test]
-# Rake::TestTask.new do |t|
-#   t.libs << "test"
-#   t.test_files = FileList['test/**/*_test.rb']
-#   t.verbose = true
-# end
-
-# Gem
-require "rake/gempackagetask"
-require "lib/mobile_notify/version"
-
-NAME = "mobile_notify"
-SUMMARY = "Mobile Notification Services w/ support for the Apple Push Notification Service (APNS)"
-GEM_VERSION = MobileNotify::VERSION
-
-spec = Gem::Specification.new do |s|
-  s.name = NAME
-  s.summary = s.description = SUMMARY
-  s.author = "Scott Bauer"
-  s.homepage = "http://github.com/Bauerpauer/mobile_notify"
-  s.version = GEM_VERSION
-  s.platform = Gem::Platform::RUBY
-  s.require_path = 'lib'
-  s.files = %w(Rakefile) + Dir.glob("lib/**/*")
-  s.executables = ['apns_ping']
-  
-  s.add_dependency "json"
+def gemspec
+  @gemspec ||= begin
+    file = File.expand_path('../mobile_notify.gemspec', __FILE__)
+    eval(File.read(file), binding, file)
+  end
 end
 
-Rake::GemPackageTask.new(spec) do |pkg|
-  pkg.gem_spec = spec
+require "rubygems/package_task"
+Gem::PackageTask.new(gemspec) do |pkg|
+  pkg.gem_spec = gemspec
 end
 
-desc "Install #{NAME} as a gem"
+desc "Install #{gemspec.name} #{gemspec.version} as a gem"
 task :install => [:repackage] do
-  sh %{gem install pkg/#{NAME}-#{GEM_VERSION}}
+  sh %{gem install pkg/#{gemspec.name}-#{gemspec.version}}
 end
 
 task :version do
-  puts GEM_VERSION
-end
-
-spec_file = ".gemspec"
-desc "Create #{spec_file}"
-task :gemspec do
-  File.open(spec_file, "w") do |file|
-    file.puts spec.to_ruby
-  end
+  puts gemspec.version
 end
